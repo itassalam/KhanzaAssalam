@@ -31,7 +31,6 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -59,6 +58,8 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
     private PreparedStatement ps;
     private ResultSet rs;
     private int i=0;
+    private BPJSCekReferensiDokterKontrol dokter=new BPJSCekReferensiDokterKontrol(null,false);
+    private BPJSCekReferensiSpesialistikKontrol poli=new BPJSCekReferensiSpesialistikKontrol(null,false);
     private HttpHeaders headers;
     private HttpEntity requestEntity;
     private ObjectMapper mapper = new ObjectMapper();
@@ -68,8 +69,6 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
     private String link="",requestJson="",URL="",user="",URUTNOREG="",utc="",JADIKANBOOKINGSURATKONTROLAPIBPJS="no",kodedokter="",kodepoli="",noreg="";
     private ApiBPJS api=new ApiBPJS();
     private boolean status=false;
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
-    private volatile boolean ceksukses = false;
 
     /** Creates new form DlgPemberianInfus
      * @param parent
@@ -229,6 +228,76 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         ChkInput.setSelected(false);
         isForm();
         
+        dokter.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {;}
+            @Override
+            public void windowClosing(WindowEvent e) {}
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if(dokter.getTable().getSelectedRow()!= -1){                    
+                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
+                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),2).toString());
+                }
+            }
+            @Override
+            public void windowIconified(WindowEvent e) {}
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+            @Override
+            public void windowActivated(WindowEvent e) {}
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
+        });
+        
+        dokter.getTable().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                    dokter.dispose();
+                }
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });  
+        
+        poli.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {}
+            @Override
+            public void windowClosing(WindowEvent e) {}
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if(poli.getTable().getSelectedRow()!= -1){                    
+                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(),1).toString());
+                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(),2).toString());
+                }   
+            }
+            @Override
+            public void windowIconified(WindowEvent e) {}
+            @Override
+            public void windowDeiconified(WindowEvent e) {}
+            @Override
+            public void windowActivated(WindowEvent e) {}
+            @Override
+            public void windowDeactivated(WindowEvent e) {}
+        });
+        
+        poli.getTable().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if(e.getKeyCode()==KeyEvent.VK_SPACE){
+                    poli.dispose();
+                }
+            }
+            @Override
+            public void keyReleased(KeyEvent e) {}
+        });  
+        
         try {
             user=akses.getkode().replace(" ","").substring(0,9);
         } catch (Exception e) {
@@ -297,7 +366,6 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         DTPTanggalKontrol2 = new widget.Tanggal();
         PanelInput = new javax.swing.JPanel();
         ChkInput = new widget.CekBox();
-        scrollInput = new widget.ScrollPane();
         FormInput = new widget.PanelBiasa();
         jLabel4 = new widget.Label();
         NoRawat = new widget.TextBox();
@@ -326,90 +394,6 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         JK = new widget.TextBox();
         jLabel17 = new widget.Label();
         Diagnosa = new widget.TextBox();
-        jLabel18 = new widget.Label();
-        StatusPRB = new widget.ComboBox();
-        jLabel19 = new widget.Label();
-        HBA1C = new widget.TextBox();
-        jLabel20 = new widget.Label();
-        jLabel21 = new widget.Label();
-        GDP = new widget.TextBox();
-        jLabel23 = new widget.Label();
-        jLabel24 = new widget.Label();
-        GD2JPP = new widget.TextBox();
-        jLabel26 = new widget.Label();
-        eGFR = new widget.TextBox();
-        jLabel27 = new widget.Label();
-        TDSistolik = new widget.TextBox();
-        jLabel28 = new widget.Label();
-        TDDiastolik = new widget.TextBox();
-        jLabel29 = new widget.Label();
-        LDL = new widget.TextBox();
-        jLabel30 = new widget.Label();
-        jLabel31 = new widget.Label();
-        RerataTDSistolik = new widget.TextBox();
-        RerataTDDiastolik = new widget.TextBox();
-        jLabel33 = new widget.Label();
-        JantungKoroner = new widget.ComboBox();
-        jLabel34 = new widget.Label();
-        Stroke = new widget.ComboBox();
-        jLabel35 = new widget.Label();
-        RRIstirahat = new widget.TextBox();
-        jLabel36 = new widget.Label();
-        jLabel37 = new widget.Label();
-        VaskularPerifer = new widget.ComboBox();
-        jLabel38 = new widget.Label();
-        Aritmia = new widget.ComboBox();
-        jLabel39 = new widget.Label();
-        AtrialFibrilasi = new widget.ComboBox();
-        SesakNapas3Bulan = new widget.ComboBox();
-        jLabel40 = new widget.Label();
-        jLabel41 = new widget.Label();
-        NyeriDada3Bulan = new widget.ComboBox();
-        jLabel42 = new widget.Label();
-        jLabel43 = new widget.Label();
-        jLabel45 = new widget.Label();
-        SesakNapasAktivitas = new widget.ComboBox();
-        jLabel44 = new widget.Label();
-        jLabel46 = new widget.Label();
-        NyeriDadaAktivitas = new widget.ComboBox();
-        jLabel47 = new widget.Label();
-        Terkontrol = new widget.ComboBox();
-        jLabel48 = new widget.Label();
-        Gejala2xMinggu = new widget.ComboBox();
-        jLabel50 = new widget.Label();
-        BangunMalam = new widget.ComboBox();
-        jLabel49 = new widget.Label();
-        jLabel51 = new widget.Label();
-        KeterbatasanFisik = new widget.ComboBox();
-        jLabel52 = new widget.Label();
-        SkorMMRC = new widget.TextBox();
-        jLabel53 = new widget.Label();
-        FungsiParu = new widget.TextBox();
-        jLabel54 = new widget.Label();
-        jLabel55 = new widget.Label();
-        Eksaserbasi1Tahun = new widget.ComboBox();
-        jLabel56 = new widget.Label();
-        MampuAktivitas = new widget.ComboBox();
-        jLabel57 = new widget.Label();
-        Epileptik6Bulan = new widget.ComboBox();
-        jLabel59 = new widget.Label();
-        EfekSampingOAB = new widget.ComboBox();
-        jLabel58 = new widget.Label();
-        jLabel60 = new widget.Label();
-        HamilMenyusui = new widget.ComboBox();
-        jLabel61 = new widget.Label();
-        TerapiRumatan = new widget.ComboBox();
-        jLabel62 = new widget.Label();
-        Remisi = new widget.TextBox();
-        Usia = new widget.TextBox();
-        jLabel32 = new widget.Label();
-        jLabel63 = new widget.Label();
-        AsamUrat = new widget.TextBox();
-        jLabel64 = new widget.Label();
-        RemisiSLE = new widget.TextBox();
-        jLabel65 = new widget.Label();
-        jLabel66 = new widget.Label();
-        Hamil = new widget.ComboBox();
 
         jPopupMenu1.setName("jPopupMenu1"); // NOI18N
 
@@ -760,7 +744,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
 
         PanelInput.setName("PanelInput"); // NOI18N
         PanelInput.setOpaque(false);
-        PanelInput.setPreferredSize(new java.awt.Dimension(192, 475));
+        PanelInput.setPreferredSize(new java.awt.Dimension(192, 156));
         PanelInput.setLayout(new java.awt.BorderLayout(1, 1));
 
         ChkInput.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/143.png"))); // NOI18N
@@ -783,12 +767,8 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         });
         PanelInput.add(ChkInput, java.awt.BorderLayout.PAGE_END);
 
-        scrollInput.setName("scrollInput"); // NOI18N
-        scrollInput.setPreferredSize(new java.awt.Dimension(102, 557));
-
-        FormInput.setBorder(null);
         FormInput.setName("FormInput"); // NOI18N
-        FormInput.setPreferredSize(new java.awt.Dimension(740, 452));
+        FormInput.setPreferredSize(new java.awt.Dimension(190, 107));
         FormInput.setLayout(null);
 
         jLabel4.setText("No.SEP :");
@@ -900,11 +880,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         jLabel14.setBounds(491, 70, 100, 23);
 
         TanggalKontrol.setForeground(new java.awt.Color(50, 70, 50));
-        TanggalKontrol.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-02-2026 05:08:45" }));
         TanggalKontrol.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
-        TanggalKontrol.setName("TanggalKontrol"); // NOI18N
-        TanggalKontrol.setOpaque(false);
-        TanggalKontrol.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 TanggalKontrolKeyPressed(evt);
             }
@@ -1549,7 +1525,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
                             HamilMenyusui.getSelectedItem().toString().trim(),Remisi.getText(),TerapiRumatan.getSelectedItem().toString().trim(),Usia.getText(),AsamUrat.getText(),RemisiSLE.getText(),Hamil.getSelectedItem().toString().trim()
                         })==true){
                         emptTeks();
-                        runBackground(() ->tampil());
+                        tampil();
                         if(JADIKANBOOKINGSURATKONTROLAPIBPJS.equals("yes")){
                             if(isBooking()==false){
                                 JOptionPane.showMessageDialog(null,"Gagal menyimpan booking, silahkan hubungi administrator...!!!!");
@@ -1687,7 +1663,7 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
 }//GEN-LAST:event_TCariKeyPressed
 
     private void BtnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCariActionPerformed
-        runBackground(() ->tampil());
+        tampil();
 }//GEN-LAST:event_BtnCariActionPerformed
 
     private void BtnCariKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnCariKeyPressed
@@ -1700,13 +1676,13 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
 
     private void BtnAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnAllActionPerformed
         TCari.setText("");
-        runBackground(() ->tampil());
+        tampil();
 }//GEN-LAST:event_BtnAllActionPerformed
 
     private void BtnAllKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BtnAllKeyPressed
         if(evt.getKeyCode()==KeyEvent.VK_SPACE){
+            tampil();
             TCari.setText("");
-            runBackground(() ->tampil());
         }else{
             Valid.pindah(evt, BtnCari, NoSEP);
         }
@@ -1725,41 +1701,6 @@ private void BtnDokterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
     if(KdPoli.getText().equals("")||NmPoli.getText().equals("")){
         Valid.textKosong(BtnPoli,"Unit/Poli");
     }else{
-        BPJSCekReferensiDokterKontrol dokter=new BPJSCekReferensiDokterKontrol(null,false);
-        dokter.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {;}
-            @Override
-            public void windowClosing(WindowEvent e) {}
-            @Override
-            public void windowClosed(WindowEvent e) {
-                if(dokter.getTable().getSelectedRow()!= -1){                    
-                    KdDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),1).toString());
-                    NmDokter.setText(dokter.getTable().getValueAt(dokter.getTable().getSelectedRow(),2).toString());
-                }
-            }
-            @Override
-            public void windowIconified(WindowEvent e) {}
-            @Override
-            public void windowDeiconified(WindowEvent e) {}
-            @Override
-            public void windowActivated(WindowEvent e) {}
-            @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });
-        
-        dokter.getTable().addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {}
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
-                    dokter.dispose();
-                }
-            }
-            @Override
-            public void keyReleased(KeyEvent e) {}
-        }); 
         dokter.SetKontrol(KdPoli.getText(),"2: Rencana Kontrol",Valid.SetTgl(TanggalKontrol.getSelectedItem()+""));
         dokter.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
         dokter.setLocationRelativeTo(internalFrame1);
@@ -1893,7 +1834,7 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
                                 HamilMenyusui.getSelectedItem().toString().trim(),Remisi.getText(),TerapiRumatan.getSelectedItem().toString().trim(),Usia.getText(),AsamUrat.getText(),RemisiSLE.getText(),Hamil.getSelectedItem().toString().trim(),NoSurat.getText()
                             })==true){
                             emptTeks();
-                            runBackground(() ->tampil());
+                            tampil();
                         }
                     }else{
                         JOptionPane.showMessageDialog(null,nameNode.path("message").asText());
@@ -1943,41 +1884,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }//GEN-LAST:event_BtnPoliKeyPressed
 
     private void BtnPoliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnPoliActionPerformed
-        BPJSCekReferensiSpesialistikKontrol poli=new BPJSCekReferensiSpesialistikKontrol(null,false);
-        poli.addWindowListener(new WindowListener() {
-            @Override
-            public void windowOpened(WindowEvent e) {}
-            @Override
-            public void windowClosing(WindowEvent e) {}
-            @Override
-            public void windowClosed(WindowEvent e) {
-                if(poli.getTable().getSelectedRow()!= -1){                    
-                    KdPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(),1).toString());
-                    NmPoli.setText(poli.getTable().getValueAt(poli.getTable().getSelectedRow(),2).toString());
-                }   
-            }
-            @Override
-            public void windowIconified(WindowEvent e) {}
-            @Override
-            public void windowDeiconified(WindowEvent e) {}
-            @Override
-            public void windowActivated(WindowEvent e) {}
-            @Override
-            public void windowDeactivated(WindowEvent e) {}
-        });
-        
-        poli.getTable().addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {}
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if(e.getKeyCode()==KeyEvent.VK_SPACE){
-                    poli.dispose();
-                }
-            }
-            @Override
-            public void keyReleased(KeyEvent e) {}
-        }); 
         poli.SetKontrol(NoSEP.getText(),"2: Rencana Kontrol",Valid.SetTgl(TanggalKontrol.getSelectedItem()+""));
         poli.setSize(internalFrame1.getWidth()-20,internalFrame1.getHeight()-20);
         poli.setLocationRelativeTo(internalFrame1);
@@ -2074,10 +1980,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private widget.ComboBox Aritmia;
-    private widget.TextBox AsamUrat;
-    private widget.ComboBox AtrialFibrilasi;
-    private widget.ComboBox BangunMalam;
     private widget.Button BtnAll;
     private widget.Button BtnBatal;
     private widget.Button BtnCari;
@@ -2094,26 +1996,12 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Tanggal DTPTanggalSurat1;
     private widget.Tanggal DTPTanggalSurat2;
     private widget.TextBox Diagnosa;
-    private widget.ComboBox EfekSampingOAB;
-    private widget.ComboBox Eksaserbasi1Tahun;
-    private widget.ComboBox Epileptik6Bulan;
     private widget.PanelBiasa FormInput;
-    private widget.TextBox FungsiParu;
-    private widget.TextBox GD2JPP;
-    private widget.TextBox GDP;
-    private widget.ComboBox Gejala2xMinggu;
-    private widget.TextBox HBA1C;
-    private widget.ComboBox Hamil;
-    private widget.ComboBox HamilMenyusui;
     private widget.TextBox JK;
-    private widget.ComboBox JantungKoroner;
     private widget.TextBox KdDokter;
     private widget.TextBox KdPoli;
-    private widget.ComboBox KeterbatasanFisik;
     private widget.Label LCount;
     private widget.Label LCount1;
-    private widget.TextBox LDL;
-    private widget.ComboBox MampuAktivitas;
     private javax.swing.JMenuItem MnSurat;
     private widget.TextBox NmDokter;
     private widget.TextBox NmPasien;
@@ -2123,34 +2011,15 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.TextBox NoRawat;
     private widget.TextBox NoSEP;
     private widget.TextBox NoSurat;
-    private widget.ComboBox NyeriDada3Bulan;
-    private widget.ComboBox NyeriDadaAktivitas;
     private javax.swing.JPanel PanelInput;
     private widget.RadioButton R1;
     private widget.RadioButton R2;
-    private widget.TextBox RRIstirahat;
-    private widget.TextBox Remisi;
-    private widget.TextBox RemisiSLE;
-    private widget.TextBox RerataTDDiastolik;
-    private widget.TextBox RerataTDSistolik;
     private widget.ScrollPane Scroll;
-    private widget.ComboBox SesakNapas3Bulan;
-    private widget.ComboBox SesakNapasAktivitas;
-    private widget.TextBox SkorMMRC;
-    private widget.ComboBox StatusPRB;
-    private widget.ComboBox Stroke;
     private widget.TextBox TCari;
-    private widget.TextBox TDDiastolik;
-    private widget.TextBox TDSistolik;
     private widget.Tanggal TanggalKontrol;
     private widget.Tanggal TanggalSurat;
-    private widget.ComboBox TerapiRumatan;
-    private widget.ComboBox Terkontrol;
     private widget.TextBox TglLahir;
-    private widget.TextBox Usia;
-    private widget.ComboBox VaskularPerifer;
     private javax.swing.ButtonGroup buttonGroup1;
-    private widget.TextBox eGFR;
     private widget.InternalFrame internalFrame1;
     private widget.Label jLabel10;
     private widget.Label jLabel11;
@@ -2160,58 +2029,11 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.Label jLabel15;
     private widget.Label jLabel16;
     private widget.Label jLabel17;
-    private widget.Label jLabel18;
-    private widget.Label jLabel19;
-    private widget.Label jLabel20;
-    private widget.Label jLabel21;
     private widget.Label jLabel22;
-    private widget.Label jLabel23;
-    private widget.Label jLabel24;
     private widget.Label jLabel25;
-    private widget.Label jLabel26;
-    private widget.Label jLabel27;
-    private widget.Label jLabel28;
-    private widget.Label jLabel29;
-    private widget.Label jLabel30;
-    private widget.Label jLabel31;
-    private widget.Label jLabel32;
-    private widget.Label jLabel33;
-    private widget.Label jLabel34;
-    private widget.Label jLabel35;
-    private widget.Label jLabel36;
-    private widget.Label jLabel37;
-    private widget.Label jLabel38;
-    private widget.Label jLabel39;
     private widget.Label jLabel4;
-    private widget.Label jLabel40;
-    private widget.Label jLabel41;
-    private widget.Label jLabel42;
-    private widget.Label jLabel43;
-    private widget.Label jLabel44;
-    private widget.Label jLabel45;
-    private widget.Label jLabel46;
-    private widget.Label jLabel47;
-    private widget.Label jLabel48;
-    private widget.Label jLabel49;
     private widget.Label jLabel5;
-    private widget.Label jLabel50;
-    private widget.Label jLabel51;
-    private widget.Label jLabel52;
-    private widget.Label jLabel53;
-    private widget.Label jLabel54;
-    private widget.Label jLabel55;
-    private widget.Label jLabel56;
-    private widget.Label jLabel57;
-    private widget.Label jLabel58;
-    private widget.Label jLabel59;
     private widget.Label jLabel6;
-    private widget.Label jLabel60;
-    private widget.Label jLabel61;
-    private widget.Label jLabel62;
-    private widget.Label jLabel63;
-    private widget.Label jLabel64;
-    private widget.Label jLabel65;
-    private widget.Label jLabel66;
     private widget.Label jLabel7;
     private widget.Label jLabel9;
     private javax.swing.JPanel jPanel3;
@@ -2219,7 +2041,6 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private widget.panelisi panelCari;
     private widget.panelisi panelGlass10;
     private widget.panelisi panelGlass8;
-    private widget.ScrollPane scrollInput;
     private widget.Table tbObat;
     // End of variables declaration//GEN-END:variables
 
@@ -2481,29 +2302,22 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
         TCari.setText(nosep);
         ChkInput.setSelected(true);
         isForm();
-        runBackground(() ->tampil());
+        tampil();
     }
     
     public void setNoRm(String norm) {
         TCari.setText(norm);
         ChkInput.setSelected(false);
         isForm();
-        runBackground(() ->tampil());
+        tampil();
     }
     
     private void isForm(){
         if(ChkInput.isSelected()==true){
-            if(internalFrame1.getHeight()>647){
-                ChkInput.setVisible(false);
-                PanelInput.setPreferredSize(new Dimension(WIDTH,475));
-                FormInput.setVisible(true);      
-                ChkInput.setVisible(true);
-            }else{
-                ChkInput.setVisible(false);
-                PanelInput.setPreferredSize(new Dimension(WIDTH,internalFrame1.getHeight()-175));
-                FormInput.setVisible(true);      
-                ChkInput.setVisible(true);
-            }
+            ChkInput.setVisible(false);
+            PanelInput.setPreferredSize(new Dimension(WIDTH,156));
+            FormInput.setVisible(true);      
+            ChkInput.setVisible(true);
         }else if(ChkInput.isSelected()==false){           
             ChkInput.setVisible(false);            
             PanelInput.setPreferredSize(new Dimension(WIDTH,20));

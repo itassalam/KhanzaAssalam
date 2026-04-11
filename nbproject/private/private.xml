@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+<<<<<<< HEAD
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="4">
         <file>
             <url>src/simrskhanza/DlgCariPeriksaRadiologi.java</url>
@@ -23,4 +24,7 @@
             <file>file:/Users/windiartonugroho/Documents/Pekerjaan/SIMRSKhanza/src/kepegawaian/DlgAuditPembuanganBendaTajam.java</file>
         </group>
     </open-files>
+=======
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+>>>>>>> a96cd08ca5 (selesai update 1104)
 </project-private>

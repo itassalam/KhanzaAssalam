@@ -17,9 +17,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
-import java.io.OutputStreamWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -1582,80 +1580,35 @@ private void ChkInputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 
     private void ppCSVWARocketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ppCSVWARocketActionPerformed
         try {
-        File f;            
-        BufferedWriter bw; 
-        htmlContent = new StringBuilder();
-
-        // Header CSV
-        htmlContent.append("\"No.HP\";\"Isi Pesan\"\n");
-
-        for(i=0;i<tabMode.getRowCount();i++){  
-            try {
-                String nohp="";
-                
-                // Format nomor HP ke 62
-                if(tabMode.getValueAt(i,26).toString().substring(0,1).equals("0")){
-                    nohp="62"+tabMode.getValueAt(i,26).toString().substring(1);
-                }else{
-                    nohp=tabMode.getValueAt(i,26).toString();
+            File f;            
+            BufferedWriter bw; 
+            htmlContent = new StringBuilder();
+            htmlContent.append(                             
+                "\"No.HP\";\"Isi Pesan\"\n"
+            ); 
+            
+            for(i=0;i<tabMode.getRowCount();i++){  
+                try {
+                    nohp="";
+                    if(tabMode.getValueAt(i,26).toString().substring(0,1).equals("0")){
+                        nohp="62"+tabMode.getValueAt(i,26).toString().substring(1,tabMode.getValueAt(i,26).toString().length());
+                    }else{
+                        nohp=tabMode.getValueAt(i,26).toString();
+                    }
+                    htmlContent.append(
+                        "\" "+nohp+"\";\""+"Mengingatkan kembali kepada saudara "+tabMode.getValueAt(i,4)+" dengan No.RM "+tabMode.getValueAt(i,3)+", berdasarkan booking pada tanggal "+tabMode.getValueAt(i,1)+" "+tabMode.getValueAt(i,2)+" dengan tujuan pemeriksaan di "+tabMode.getValueAt(i,9)+" pada tanggal "+tabMode.getValueAt(i,5)+" agar bisa datang dengan nomor antrian "+tabMode.getValueAt(i,10)+". Customer Service "+akses.getnamars()+"\"\n"
+                    );
+                } catch (Exception e) {
                 }
-
-                // Ambil data dari tabel
-                String nama      = tabMode.getValueAt(i,4).toString();
-                String norm      = tabMode.getValueAt(i,3).toString();
-                String tglKontrol= tabMode.getValueAt(i,5).toString();
-                String dokter    = tabMode.getValueAt(i,7).toString();  // sesuaikan jika beda kolom
-                String poli      = tabMode.getValueAt(i,9).toString();
-
-                // Template pesan WA
-                String pesan =
-                        "Assalamualaikum Bapak/Ibu,\n" +
-                        "Bagaimana kabarnya hari ini? Semoga Bapak/Ibu selalu dalam keadaan sehat dan dalam lindungan Allah SWT.\n" +
-                        "Berikut kami informasikan kembali *jadwal kontrol Anda di RS Assalam*.\n\n" +
-
-                        "Berikut adalah Jadwal Kontrol Anda:\n" +
-                        "📍 Nama : " + nama + "\n" +
-                        "📑 No Rekam Medis : " + norm + "\n" +
-                        "📅 Tanggal Kontrol : " + tglKontrol + "\n" +
-                        "👨‍⚕️ Dokter : " + dokter + "\n" +
-                        "🏥 Poliklinik : " + poli + "\n\n" +
-
-                        "Mohon konfirmasi kehadiran Anda dengan membalas pesan: *AKAN KONTROL*\n\n" +
-
-                        "--- INFO PENDAFTARAN ---\n" +
-                        "1. Asuransi/Umum: Kirim foto surat kontrol via WhatsApp ini.\n" +
-                        "2. BPJS Kesehatan: Wajib daftar melalui Aplikasi Mobile JKN di link berikut:\n" +
-                        "https://play.google.com/store/apps/details?id=app.bpjs.mobile&hl=id\n\n" +
-
-                        "Terima kasih atas perhatian dan telah memercayakan kesehatan Anda kepada RS Assalam.\n" +
-                        "Wassalamualaikum warahmatullahi wabarakatuh\n" +
-                        "RS Assalam - Ihsan dalam Pelayanan";
-
-                // Tambahkan ke CSV
-                htmlContent.append("\" "+nohp+"\";\""+pesan+"\"\n");
-
-            } catch (Exception e) {
-                System.out.println("Error baris ke "+i+" : "+e.getMessage());
-            }
+            }                   
+                                
+            f = new File("WARocket.csv");            
+            bw = new BufferedWriter(new FileWriter(f));            
+            bw.write(htmlContent.toString());
+            bw.close();                         
+            Desktop.getDesktop().browse(f.toURI());
+        } catch (Exception e) {
         }
-
-        // Simpan file CSV
-        f = new File("WARocket.csv");
-
-        // tulis UTF-8 supaya emoji tidak rusak
-        bw = new BufferedWriter(
-                new OutputStreamWriter(new FileOutputStream(f), "UTF-8")
-        );
-
-bw.write(htmlContent.toString());
-bw.close();                        
-
-        // Auto buka file
-        Desktop.getDesktop().browse(f.toURI());
-
-    } catch (Exception e) {
-        System.out.println("Gagal export CSV : "+e.getMessage());
-    }
     }//GEN-LAST:event_ppCSVWARocketActionPerformed
 
     /**

@@ -900,7 +900,11 @@ public class BPJSSuratKontrol extends javax.swing.JDialog {
         jLabel14.setBounds(491, 70, 100, 23);
 
         TanggalKontrol.setForeground(new java.awt.Color(50, 70, 50));
+        TanggalKontrol.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "09-02-2026 05:08:45" }));
         TanggalKontrol.setDisplayFormat("dd-MM-yyyy HH:mm:ss");
+        TanggalKontrol.setName("TanggalKontrol"); // NOI18N
+        TanggalKontrol.setOpaque(false);
+        TanggalKontrol.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 TanggalKontrolKeyPressed(evt);
             }

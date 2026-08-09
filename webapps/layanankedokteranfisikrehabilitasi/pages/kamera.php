@@ -111,7 +111,7 @@
             </table>
             <br/>
             <h7 class="text-dark">
-                Demikian pernyataan ini dibuat dalam keadaan penuh kesadaran untuk digunakan sebagaimana mestinya.
+                Saya telah membaca, memahami, dan memperoleh penjelasan mengenai ketentuan yang berlaku. Saya menyetujui penggunaan foto diri sebagai metode autentikasi persetujuan yang digunakan sebagai pengganti pembubuhan tanda tangan. Pernyataan ini saya buat dalam keadaan sadar, tanpa paksaan dari pihak mana pun, untuk digunakan sebagaimana mestinya sebagai bentuk pertanggungjawaban dan alat bukti elektronik sesuai dengan ketentuan peraturan perundang-undangan yang berlaku. Demikian pernyataan ini dibuat dalam keadaan penuh kesadaran untuk digunakan sebagaimana mestinya.
             </h7>
             <br/>
             <br/>

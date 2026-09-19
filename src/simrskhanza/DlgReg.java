@@ -6799,11 +6799,29 @@ public final class DlgReg extends javax.swing.JDialog {
             Valid.textKosong(TBiaya,"biaya regristrasi");
         }else if(kdpnj.getText().trim().equals("")||nmpnj.getText().trim().equals("")){
             Valid.textKosong(kdpnj,"Jenis Bayar");
+        }else if(AsalRujukan.getText().trim().equals("")){
+            Valid.textKosong(AsalRujukan,"Asal Rujukan");    
         }else if(Sequel.cariInteger(
                 "select count(pasien.no_rkm_medis) from pasien inner join reg_periksa on reg_periksa.no_rkm_medis=pasien.no_rkm_medis "+
                 "inner join kamar_inap on reg_periksa.no_rawat=kamar_inap.no_rawat where kamar_inap.stts_pulang='-' and pasien.no_rkm_medis=?",TNoRM.getText())>0){
             JOptionPane.showMessageDialog(null,"Pasien sedang dalam masa perawatan di kamar inap..!!");
             TNoRM.requestFocus();
+        }else if(Sequel.cariInteger(
+        "SELECT COUNT(*) " +
+        "FROM skdp_bpjs " +
+        "WHERE no_rkm_medis=? " +
+        "AND status='Menunggu' " +
+        "AND kd_poli=? " +
+        "AND DATE(tanggal_datang)<>?",
+        TNoRM.getText(),
+        kdpoli.getText(),
+        Valid.SetTgl(DTPReg.getSelectedItem()+""))>0){
+    JOptionPane.showMessageDialog(null,
+            "Tanggal kontrol pasien tidak sesuai.\n"
+            + "Cek kembali Surat Kontrol Pasien.");
+    TNoRM.requestFocus();
+    
+            
         }else{
             if(akses.getkode().equals("Admin Utama")){
                 isRegistrasi();

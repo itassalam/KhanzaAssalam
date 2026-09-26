@@ -1806,4 +1806,34 @@ public class koneksiDB {
         }
         return var;
     }
+    
+    public static String URLAPPLINKSATUSEHAT() {
+        try {
+            prop.loadFromXML(new FileInputStream("setting/database.xml"));
+            var = prop.getProperty("URLAPPLINKSATUSEHAT");
+        } catch (Exception e) {
+            var = "";
+        }
+        return var;
+    }
+    
+    public static String IDORGBPJSSATUSEHAT() {
+        try {
+            prop.loadFromXML(new FileInputStream("setting/database.xml"));
+            var = prop.getProperty("IDORGBPJSSATUSEHAT");
+        } catch (Exception e) {
+            var = "";
+        }
+        return var;
+    }
+    
+    public static String KODEAKUNPENGELUARANHARIAN() {
+        try {
+            prop.loadFromXML(new FileInputStream("setting/database.xml"));
+            var = prop.getProperty("KODEAKUNPENGELUARANHARIAN");
+        } catch (Exception e) {
+            var = "";
+        }
+        return var;
+    }
 }

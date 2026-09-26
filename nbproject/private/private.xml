@@ -5,7 +5,7 @@
             <url>src/simrskhanza/DlgCariPeriksaRadiologi.java</url>
             <bookmark id="2">
                 <name/>
-                <line>1837</line>
+                <line>1863</line>
                 <key/>
             </bookmark>
         </file>
@@ -19,6 +19,13 @@
         </file>
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/Users/windiartonugroho/Documents/Pekerjaan/SIMRSKhanza/src/bridging/SatuSehatKirimCompositionRME.java</file>
+            <file>file:/Users/windiartonugroho/Documents/Pekerjaan/SIMRSKhanza/.gitignore</file>
+            <file>file:/Users/windiartonugroho/Documents/Pekerjaan/SIMRSKhanza/src/rekammedis/RMSkriningTOLAC.java</file>
+            <file>file:/Users/windiartonugroho/Documents/Pekerjaan/SIMRSKhanza/src/fungsi/akses.java</file>
+            <file>file:/Users/windiartonugroho/Documents/Pekerjaan/SIMRSKhanza/setting/database.xml</file>
+            <file>file:/Users/windiartonugroho/Documents/Pekerjaan/SIMRSKhanza/src/widget/TabPane.java</file>
+        </group>
     </open-files>
 </project-private>
